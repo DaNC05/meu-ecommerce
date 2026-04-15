@@ -2,6 +2,7 @@ import StyledComponentsRegistry from '../lib/registro'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { CartProvider } from '@/contexts/CartContext'
+import { AuthContext, LoginProvider } from '@/contexts/AuthContext'
 
 export default function RootLayout({
   children, }: {
@@ -11,19 +12,21 @@ export default function RootLayout({
     <html lang="pt-BR">
 
       <body style={{ margin: 0, fontFamily: 'system-ui, sans-serif', backgroundColor: '#f5f5f5', display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-        <CartProvider>
-          <StyledComponentsRegistry>
-            <Header />
-            <main style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto', flex: 1, width: '100%' }}>
+        <LoginProvider>
+          <CartProvider>
+            <StyledComponentsRegistry>
+              <Header />
+              <main style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto', flex: 1, width: '100%' }}>
 
-              {children}
+                {children}
 
-            </main>
+              </main>
 
-            <Footer />
+              <Footer />
 
-          </StyledComponentsRegistry>
-        </CartProvider>
+            </StyledComponentsRegistry>
+          </CartProvider>
+        </LoginProvider>
       </body>
 
     </html>
