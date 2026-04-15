@@ -2,7 +2,7 @@ import StyledComponentsRegistry from '../lib/registro'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { CartProvider } from '@/contexts/CartContext'
-import { AuthContext, LoginProvider } from '@/contexts/AuthContext'
+import { LoginProvider } from '@/contexts/AuthContext'
 
 export default function RootLayout({
   children, }: {

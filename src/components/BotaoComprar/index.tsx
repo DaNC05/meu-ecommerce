@@ -1,20 +1,20 @@
 'use client'
 import { useContext } from "react";
 import { CartContext } from "@/contexts/CartContext";
-
+import { BotaoAcao } from "./styles";
 interface BotaoProps {
-  produtoId: number;
+    produtoId: number;
 }
 
-export default  function BotaoComprar({produtoId}:BotaoProps) {
-    const{adicionarAoCarrinho} = useContext(CartContext)
+export default function BotaoComprar({ produtoId }: BotaoProps) {
+    const { adicionarAoCarrinho } = useContext(CartContext)
     const adicionar = () => {
-       adicionarAoCarrinho(produtoId)
+        adicionarAoCarrinho(produtoId)
     }
-    
+
     return (
         <>
-         <button onClick={adicionar}>Adicionar ao Carrinho</button>
+            <BotaoAcao onClick={adicionar}>Adicionar ao Carrinho</BotaoAcao>
         </>
     )
 }

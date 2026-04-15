@@ -1,7 +1,7 @@
 'use client'
 
 import styled from 'styled-components';
-
+import Link from 'next/link';
 
 const CardProduto = styled.div`
 background-color: white;
@@ -19,7 +19,23 @@ img{
   margin-bottom: 1rem;
 }
 `
+export const LinkBotao = styled(Link)`
+  display:block;
+  background-color:#1e1e2f;
+  color:white;
+  text-align:center;
+  padding:10px 15px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  margint-top: 1rem;
+  &:hover{
+     background-color:white;
+     color:#00d8ff;
+  }
 
+`
 export default CardProduto
 
 

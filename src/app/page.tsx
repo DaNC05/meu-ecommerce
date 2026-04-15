@@ -1,5 +1,9 @@
-import Link from 'next/link'
+
+import { LinkBotao } from "./styles";
+import Link from "next/link";
 import CardProduto from './styles';
+
+
 //Tipagem Simples para os produtos
 interface Produto {
   id: number;
@@ -20,11 +24,14 @@ export default async function Home() {
         <h1>Catálogo de Produtos</h1>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem', marginTop: '2rem' }}>
           {produtos.map((produto) => (
+
             <CardProduto key={produto.id}>
               <h3>{produto.title}</h3>
-              <img src={produto.images[0]}></img>
+              <Link href={`/produto/${produto.id}`}>
+                <img src={produto.images[0]}></img>
+              </Link>
               <p>R$ {produto.price}</p>
-              <Link href={`/produto/${produto.id}`}>Ver Detalhes</Link>
+              <LinkBotao href={`/produto/${produto.id}`}>Ver Detalhes</LinkBotao>
             </CardProduto>
 
           ))}

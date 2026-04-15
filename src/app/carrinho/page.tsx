@@ -3,7 +3,7 @@
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "@/contexts/CartContext";
 import styled from "styled-components";
-
+import { LinkBotao } from "../styles";
 
 const Container = styled.div`
      max-width: 800px;
@@ -72,6 +72,7 @@ export default function PaginaCarrinho() {
                         )
                     })}
                     {<h2>Total da Compra: R$ {valorTotal.toFixed(2)}</h2>}
+                    {carrinho.length != 0 ? <LinkBotao href="./checkout">Pagar</LinkBotao> : ''}
                     <BotaoAcao onClick={limparCarrinho}>Limpar Carrinho</BotaoAcao>
                 </>)
             }

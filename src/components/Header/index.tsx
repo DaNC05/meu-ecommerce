@@ -1,6 +1,6 @@
 'use client'
 
-import Link from 'next/link';
+import { LinkBotao } from '@/app/styles';
 import { HeaderContainer, Nav } from './styles';
 import { useContext } from 'react';
 import { CartContext } from '@/contexts/CartContext';
@@ -15,8 +15,8 @@ export default function Header() {
             <h2>E-Commerce</h2>
             <Nav>
                 {usuario != null ? <><p>Olá, {usuario} </p> <button onClick={Logout}>Sair</button></> : <button onClick={Login}>Entrar</button>}
-                <Link href="/">Catálogo</Link>
-                <Link href="/carrinho">Carrinho {carrinho.length}</Link>
+                <LinkBotao href="/">Catálogo</LinkBotao>
+                <LinkBotao href="/carrinho">Carrinho {carrinho.length}</LinkBotao>
             </Nav>
         </HeaderContainer>
     )
