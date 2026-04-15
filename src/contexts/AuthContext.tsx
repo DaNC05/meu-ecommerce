@@ -5,6 +5,7 @@ import { createContext, useState, ReactNode, useEffect } from 'react';
 interface AuthContextData {
     usuario: string | null;
     Login: () => void;
+    Logout: () => void;
 }
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
@@ -15,5 +16,8 @@ export function LoginProvider({ children }: { children: ReactNode }) {
 
         setUsuario('Joao')
     }
-    return <AuthContext.Provider value={{ Login, usuario }}> {children} </AuthContext.Provider>
+    const Logout = () => {
+        setUsuario(null)
+    }
+    return <AuthContext.Provider value={{ Logout, Login, usuario }}> {children} </AuthContext.Provider>
 }
