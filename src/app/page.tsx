@@ -4,13 +4,16 @@ interface Produto{
   id:number;
   title: string;
   price: number;
-  image: string;
+  images: string[];
 }
 
 export default async function Home(){
   //Faz uma requisição diretamente no corpo do componente
-  const resposta = await fetch('https://fakestoreapi.com/products');
-  const produtos : Produto[] = await resposta.json();
+  try{
+  const resposta = await fetch('https://dummyjson.com/products');
+  if(!resposta.ok) throw new Error(`Erro ${resposta.status}`)
+    const dados = await resposta.json();
+    const produtos: Produto[] = dados.products;
   return(
     <div>
       <h1>Catálogo de Produtos</h1>
@@ -18,7 +21,7 @@ export default async function Home(){
         {produtos.map((produto) =>(
           <div key ={produto.id} style={{border: '1px solid #ccc', padding:'1rem',borderRadius:'8px'}}>
             <h3>{produto.title}</h3>
-            <img src={produto.image}></img>
+            <img src={produto.images[0]}></img>
             <p>R$ {produto.price}</p>
             <Link href={`/produto/${produto.id}`}>Ver Detalhes</Link>
           </div>
@@ -28,5 +31,8 @@ export default async function Home(){
       </div>
 
     </div>
-  )
+  )}
+  catch{
+    return <div>Erro ao carregar produtos.</div>;
+  }
 }

@@ -1,66 +1,79 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client'
 
-export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className={styles.intro}>
-          <h1>Carrinho de Compras</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
-  );
+import { useContext, useEffect, useState } from "react";
+import { CartContext } from "@/contexts/CartContext";
+import styled from "styled-components";
+
+const Container = styled.div`
+     max-width: 800px;
+     margin: 0 auto;
+     padding:20px;
+    `
+const ItemEstilizado = styled.div`
+     display:flex;
+     justify-content:space-between;
+     align-items: center;
+     border-bottom:1px solid #eee
+    `
+
+const BotaoAcao = styled.button`
+     padding:5px 10px;
+     border:none;
+     border-radius:5px;
+     cursor:pointer;
+     background-color:${props => props.$remover ? 'red' : '#f0f0f0'};
+     &:hover{background-color:${props => props.$remover ? 'darkred' : '#e0e0e0'}};
+    `
+export default function PaginaCarrinho() {
+    const { carrinho, removeDoCarrinho, aumentarQuantidade, diminuirQuantidade, limparCarrinho } = useContext(CartContext)
+    const [carregando, setCarregando] = useState(true)
+
+    // Estado para guardar os dados completos vindos da API
+    const [produtosDoCarrinho, setProdutosDoCarrinho] = useState([])
+
+    useEffect(() => {
+        async function buscarProdutos() {
+            const resposta = await fetch('https://dummyjson.com/products');
+            const dados = await resposta.json();
+            setProdutosDoCarrinho(dados.products)
+            setCarregando(false)
+        } buscarProdutos()
+    }, [carrinho])
+    if (carregando) {
+        return <h2>Carregando produtos... ⏳</h2>
+    }
+    const valorTotal = carrinho.reduce((acumulador, item) => {
+        const produtoCompleto = produtosDoCarrinho.find((produtosDaApi) => produtosDaApi.id === item.produtoId);
+        const subTotal = (produtoCompleto?.price || 0) * item.quantidade
+        return acumulador + subTotal
+
+    }, 0)
+    return (
+        <Container>
+            <h1>Seu Carrinho</h1>
+            {carrinho.length === 0 ? (<h2>Seu Carrinho está vazio</h2>) :
+                (<>
+                    {carrinho.map((item) => {
+                        const produtoCompleto = produtosDoCarrinho.find((produtosDaApi) => produtosDaApi.id === item.produtoId);
+
+                        const subTotal = (produtoCompleto?.price || 0) * item.quantidade
+                        return (
+                            <ItemEstilizado key={item.produtoId}>
+                                <p >
+                                    Produto:{produtoCompleto?.title} | Quantidade:{item.quantidade} | Valor: {subTotal.toFixed(2)}
+                                </p>
+                                <BotaoAcao onClick={() => aumentarQuantidade(item.produtoId)}>+</BotaoAcao>
+                                <BotaoAcao onClick={() => diminuirQuantidade(item.produtoId)}>-</BotaoAcao>
+                                <BotaoAcao $remover onClick={() => removeDoCarrinho(item.produtoId)}>❌</BotaoAcao>
+                            </ItemEstilizado>
+                        )
+                    })}
+                    {<h2>Total da Compra: R$ {valorTotal.toFixed(2)}</h2>}
+                    <BotaoAcao onClick={limparCarrinho}>Limpar Carrinho</BotaoAcao>
+                </>)
+            }
+
+        </Container>
+    )
 }
+
