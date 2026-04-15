@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { CartContext } from "@/contexts/CartContext";
 import styled from "styled-components";
 
+
 const Container = styled.div`
      max-width: 800px;
      margin: 0 auto;
@@ -24,6 +25,8 @@ const BotaoAcao = styled.button`
      background-color:${props => props.$remover ? 'red' : '#f0f0f0'};
      &:hover{background-color:${props => props.$remover ? 'darkred' : '#e0e0e0'}};
     `
+
+
 export default function PaginaCarrinho() {
     const { carrinho, removeDoCarrinho, aumentarQuantidade, diminuirQuantidade, limparCarrinho } = useContext(CartContext)
     const [carregando, setCarregando] = useState(true)
