@@ -5,7 +5,7 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Styled Components](https://img.shields.io/badge/styled--components-DB7093?style=for-the-badge&logo=styled-components&logoColor=white)](https://styled-components.com/)
 
-> **Acesse o projeto online:** [Link para o projeto na Vercel]([https://seu-link-da-vercel.vercel.app](https://meu-ecommerce-bghv5rlli-danc05s-projects.vercel.app/)
+> **Acesse o projeto online:** [Link para o projeto na Vercel]([E-Commerce](https://meu-ecommerce-bghv5rlli-danc05s-projects.vercel.app/)
 
 Um front-end de e-commerce completo, focado em performance, SEO e excelente experiência do usuário (UX). Construído do zero para demonstrar a aplicação de conceitos avançados e arquitetura moderna utilizando o ecosistema React/Next.js.
 
