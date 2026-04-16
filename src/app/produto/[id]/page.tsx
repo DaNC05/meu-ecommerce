@@ -1,6 +1,15 @@
 import BotaoComprar from '../../../components/BotaoComprar'
 import { ProdutoContainer, ImagemProduto, InfoContainer } from './styles';
 
+
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const resposta = await fetch(`https://dummyjson.com/products/${id}`)
+  const produto = await resposta.json();
+  return {
+    title: `${produto.title} - Meu E-commerce`,
+  }
+}
 export default async function PaginaProduto({
   params
 }: {
