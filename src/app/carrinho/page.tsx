@@ -2,34 +2,16 @@
 
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "@/contexts/CartContext";
-import styled from "styled-components";
+import { AuthContext } from '@/contexts/AuthContext';
 import { LinkBotao } from "../styles";
+import { CarrinhoContainer, CartItemRow, ProductInfoGroup, QuantityControlGroup, BotaoCarrinho, ActionGroup, CartSummaryContainer } from "./styles";
 
-const Container = styled.div`
-     max-width: 800px;
-     margin: 0 auto;
-     padding:20px;
-    `
-const ItemEstilizado = styled.div`
-     display:flex;
-     justify-content:space-between;
-     align-items: center;
-     border-bottom:1px solid #eee
-    `
-
-const BotaoAcao = styled.button`
-     padding:5px 10px;
-     border:none;
-     border-radius:5px;
-     cursor:pointer;
-     background-color:${props => props.$remover ? 'red' : '#f0f0f0'};
-     &:hover{background-color:${props => props.$remover ? 'darkred' : '#e0e0e0'}};
-    `
 
 
 export default function PaginaCarrinho() {
     const { carrinho, removeDoCarrinho, aumentarQuantidade, diminuirQuantidade, limparCarrinho } = useContext(CartContext)
     const [carregando, setCarregando] = useState(true)
+    const { usuario, Login, Logout } = useContext(AuthContext)
 
     // Estado para guardar os dados completos vindos da API
     const [produtosDoCarrinho, setProdutosDoCarrinho] = useState([])
@@ -42,6 +24,9 @@ export default function PaginaCarrinho() {
             setCarregando(false)
         } buscarProdutos()
     }, [carrinho])
+    if (usuario === null) {
+        return <><h2>Faça login para acessar o carrinho</h2> <button onClick={Login}>Entrar</button></>
+    }
     if (carregando) {
         return <h2>Carregando produtos... ⏳</h2>
     }
@@ -52,32 +37,46 @@ export default function PaginaCarrinho() {
 
     }, 0)
     return (
-        <Container>
+        <CarrinhoContainer>
             <h1>Seu Carrinho</h1>
-            {carrinho.length === 0 ? (<h2>Seu Carrinho está vazio</h2>) :
+            {carrinho.length === 0 ? (<h2>Seu Carrinho está vazio...</h2>) :
                 (<>
                     {carrinho.map((item) => {
                         const produtoCompleto = produtosDoCarrinho.find((produtosDaApi) => produtosDaApi.id === item.produtoId);
 
                         const subTotal = (produtoCompleto?.price || 0) * item.quantidade
                         return (
-                            <ItemEstilizado key={item.produtoId}>
-                                <p >
-                                    Produto: {produtoCompleto?.title} | Quantidade: {item.quantidade} | Valor: {subTotal.toFixed(2)}
-                                </p>
-                                <BotaoAcao onClick={() => aumentarQuantidade(item.produtoId)}>+</BotaoAcao>
-                                <BotaoAcao onClick={() => diminuirQuantidade(item.produtoId)}>-</BotaoAcao>
-                                <BotaoAcao $remover onClick={() => removeDoCarrinho(item.produtoId)}>❌</BotaoAcao>
-                            </ItemEstilizado>
+                            <CartItemRow key={item.produtoId}>
+                                <ProductInfoGroup>
+                                    <img src={produtoCompleto?.images[0]} alt={produtoCompleto?.title}></img>
+                                    <div className="info-textos">
+                                        <p className="title">{produtoCompleto?.title}</p>
+                                        <p>R$ {produtoCompleto?.price.toFixed(2)}</p>
+                                    </div>
+                                </ProductInfoGroup>
+                                <QuantityControlGroup>
+                                    <BotaoCarrinho onClick={() => aumentarQuantidade(item.produtoId)}>+</BotaoCarrinho>
+                                    <span className="quantidade-num">{item.quantidade}</span>
+                                    <BotaoCarrinho onClick={() => diminuirQuantidade(item.produtoId)}>-</BotaoCarrinho>
+                                </QuantityControlGroup>
+                                <ActionGroup>
+                                    <p className="subtotal-preco">R$ {subTotal.toFixed(2)}</p>
+                                    <BotaoCarrinho $variant="remover" onClick={() => removeDoCarrinho(item.produtoId)}>❌</BotaoCarrinho>
+                                </ActionGroup>
+                            </CartItemRow>
                         )
                     })}
-                    {<h2>Total da Compra: R$ {valorTotal.toFixed(2)}</h2>}
-                    {carrinho.length != 0 ? <LinkBotao href="./checkout">Pagar</LinkBotao> : ''}
-                    <BotaoAcao onClick={limparCarrinho}>Limpar Carrinho</BotaoAcao>
+                    <CartSummaryContainer>
+                        {<h2>Total da Compra: R$ {valorTotal.toFixed(2)}</h2>}
+                        <div className="cart-actions">
+                            <LinkBotao href="/checkout">Pagar</LinkBotao>
+                            <BotaoCarrinho $variant="large" onClick={limparCarrinho}>Limpar Carrinho</BotaoCarrinho>
+                        </div>
+                    </CartSummaryContainer>
                 </>)
             }
 
-        </Container>
+        </CarrinhoContainer >
     )
 }
 
