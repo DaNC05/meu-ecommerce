@@ -5,6 +5,7 @@ import { CartContext } from "@/contexts/CartContext";
 import { AuthContext } from '@/contexts/AuthContext';
 import { LinkBotao } from "../styles";
 import { CarrinhoContainer, CartItemRow, ProductInfoGroup, QuantityControlGroup, BotaoCarrinho, ActionGroup, CartSummaryContainer } from "./styles";
+import { BotaoAcaoHeader } from "@/components/Header/styles";
 
 
 
@@ -25,7 +26,7 @@ export default function PaginaCarrinho() {
         } buscarProdutos()
     }, [carrinho])
     if (usuario === null) {
-        return <><h2>Faça login para acessar o carrinho</h2> <button onClick={Login}>Entrar</button></>
+        return <><h2>Faça login para acessar o carrinho</h2> <BotaoAcaoHeader onClick={Login}>Entrar</BotaoAcaoHeader></>
     }
     if (carregando) {
         return <h2>Carregando produtos... ⏳</h2>

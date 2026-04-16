@@ -1,8 +1,6 @@
 
-import { LinkBotao } from "./styles";
+import { CardProduto, LinkBotao } from "./styles";
 import Link from "next/link";
-import CardProduto from './styles';
-
 
 //Tipagem Simples para os produtos
 interface Produto {

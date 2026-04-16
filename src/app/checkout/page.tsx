@@ -3,6 +3,8 @@
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from '@/contexts/CartContext';
 import { AuthContext } from '@/contexts/AuthContext';
+import { BotaoAcaoHeader } from "@/components/Header/styles";
+import { CheckoutContainer, ItemResumo, MensagemCentral, Titulo, TotalContainer, BotaoPagamento } from "./styles";
 
 
 export default function Checkout() {
@@ -24,10 +26,17 @@ export default function Checkout() {
         } buscarProdutos()
     }, [carrinho])
     if (usuario === null) {
-        return <><h2>Faça login para finalizar a compra</h2> <button onClick={Login}>Entrar</button></>
+        return (
+            <CheckoutContainer>
+                <MensagemCentral>
+                    <h2>Faça login para finalizar a compra</h2>
+                    <BotaoAcaoHeader onClick={Login}>Entrar na Conta</BotaoAcaoHeader>
+                </MensagemCentral>
+            </CheckoutContainer>
+        );
     }
     if (carregando) {
-        return <h2>Carregando produtos... ⏳</h2>
+        return <CheckoutContainer><h2 style={{ textAlign: 'center' }}>Preparando seu pedido... ⏳</h2></CheckoutContainer>
     }
     const valorTotal = carrinho.reduce((acumulador, item) => {
         const produtoCompleto = produtosDoCarrinho.find((produtosDaApi) => produtosDaApi.id === item.produtoId);
@@ -36,32 +45,40 @@ export default function Checkout() {
 
     }, 0)
     return (
-        <div>
-            <h1>Pagamento</h1>
-            {carrinho.length === 0 ? (<h2>Seu Carrinho está vazio</h2>) :
+        <CheckoutContainer>
+            <Titulo>Pagamento</Titulo>
+            {carrinho.length === 0 ? (<MensagemCentral><h2>Seu Carrinho está vazio</h2></MensagemCentral>) :
                 (<>
                     {carrinho.map((item) => {
                         const produtoCompleto = produtosDoCarrinho.find((produtosDaApi) => produtosDaApi.id === item.produtoId);
 
                         const subTotal = (produtoCompleto?.price || 0) * item.quantidade
                         return (
-                            <div key={item.produtoId}>
-                                <p >
-                                    Produto: {produtoCompleto?.title} | Quantidade: {item.quantidade} | Valor: {subTotal.toFixed(2)}
-                                </p>
-                                <button onClick={() => aumentarQuantidade(item.produtoId)}>+</button>
-                                <button onClick={() => diminuirQuantidade(item.produtoId)}>-</button>
-                                <button $remover onClick={() => removeDoCarrinho(item.produtoId)}>❌</button>
-                            </div>
+                            <ItemResumo key={item.produtoId}>
+                                <div className="info-produto">
+                                    <span className="nome">{produtoCompleto?.title}</span>
+                                    <span className="detalhes">Qtd: {item.quantidade} x R$ {produtoCompleto?.price.toFixed(2)}</span>
+                                </div>
+                                <span className="subtotal">R$ {subTotal.toFixed(2)}</span>
+
+
+                            </ItemResumo>
+
                         )
                     })}
-                    {<h2>Total da Compra: R$ {valorTotal.toFixed(2)}</h2>}
-                    <button onClick={confirmarPagamento}>Confirmar Pagamento</button>
-                    <button onClick={limparCarrinho}>Limpar Carrinho</button>
+                    <TotalContainer>
+                        <span>Total da Compra:</span>
+                        <span style={{ color: '#2ecc71' }}> R$ {valorTotal.toFixed(2)}</span>
+
+                        <BotaoPagamento onClick={confirmarPagamento}>
+                            Confirmar e Pagar
+                        </BotaoPagamento>
+                    </TotalContainer>
+
                 </>)
             }
 
-        </div>
+        </CheckoutContainer>
     )
 
 

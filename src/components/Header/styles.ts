@@ -39,11 +39,4 @@ export const BotaoAcaoHeader = styled.button`
         background-color: #e0e0e0; 
     }
 
-    /* Estilo para "Sair" com fundo escuro e borda vermelha */
-    ${props => props.$remover ? `
-        background-color: #1e1e2f; 
-        color: white;
-        border: 1px solid darkred;
-        &:hover { background-color: darkred; color: white; }
-    `: ''}
 `;
