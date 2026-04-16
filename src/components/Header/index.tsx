@@ -1,11 +1,9 @@
 'use client'
 
-import { LinkBotao } from '@/app/styles';
-import { HeaderContainer, Nav } from './styles';
 import { useContext } from 'react';
 import { CartContext } from '@/contexts/CartContext';
 import { AuthContext } from '@/contexts/AuthContext';
-
+import { HeaderContainer, HeaderLink, HeaderNav, BotaoAcaoHeader } from './styles';
 
 export default function Header() {
     const { carrinho } = useContext(CartContext);
@@ -13,11 +11,11 @@ export default function Header() {
     return (
         <HeaderContainer>
             <h2>E-Commerce</h2>
-            <Nav>
-                {usuario != null ? <><p>Olá, {usuario} </p> <button onClick={Logout}>Sair</button></> : <button onClick={Login}>Entrar</button>}
-                <LinkBotao href="/">Catálogo</LinkBotao>
-                <LinkBotao href="/carrinho">Carrinho {carrinho.length}</LinkBotao>
-            </Nav>
+            <HeaderNav>
+                {usuario != null ? <><span>Olá, {usuario} </span> <BotaoAcaoHeader onClick={Logout}>Sair</BotaoAcaoHeader></> : <BotaoAcaoHeader onClick={Login}>Entrar</BotaoAcaoHeader>}
+                <HeaderLink href="/">Catálogo</HeaderLink>
+                <HeaderLink href="/carrinho">Carrinho {carrinho.length}</HeaderLink>
+            </HeaderNav>
         </HeaderContainer>
     )
 }
