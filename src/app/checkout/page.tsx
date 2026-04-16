@@ -7,10 +7,18 @@ import { BotaoAcaoHeader } from "@/components/Header/styles";
 import { CheckoutContainer, ItemResumo, MensagemCentral, Titulo, TotalContainer, BotaoPagamento } from "./styles";
 
 
+interface Produto {
+    id: number;
+    title: string;
+    price: number;
+    images: string[];
+}
+
+
 export default function Checkout() {
     const { carrinho, limparCarrinho, aumentarQuantidade, diminuirQuantidade, removeDoCarrinho } = useContext(CartContext);
     const { usuario, Login, Logout } = useContext(AuthContext)
-    const [produtosDoCarrinho, setProdutosDoCarrinho] = useState([])
+    const [produtosDoCarrinho, setProdutosDoCarrinho] = useState<Produto[]>([])
     const [carregando, setCarregando] = useState(true)
     const confirmarPagamento = () => {
         alert("Compra Realizada com Sucesso")

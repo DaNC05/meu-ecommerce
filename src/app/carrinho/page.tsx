@@ -7,6 +7,13 @@ import { LinkBotao } from "../styles";
 import { CarrinhoContainer, CartItemRow, ProductInfoGroup, QuantityControlGroup, BotaoCarrinho, ActionGroup, CartSummaryContainer } from "./styles";
 import { BotaoAcaoHeader } from "@/components/Header/styles";
 
+interface Produto {
+    id: number;
+    title: string;
+    price: number;
+    images: string[];
+}
+
 
 
 export default function PaginaCarrinho() {
@@ -15,7 +22,7 @@ export default function PaginaCarrinho() {
     const { usuario, Login, Logout } = useContext(AuthContext)
 
     // Estado para guardar os dados completos vindos da API
-    const [produtosDoCarrinho, setProdutosDoCarrinho] = useState([])
+    const [produtosDoCarrinho, setProdutosDoCarrinho] = useState<Produto[]>([])
 
     useEffect(() => {
         async function buscarProdutos() {
