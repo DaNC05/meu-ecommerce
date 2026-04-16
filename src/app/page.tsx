@@ -15,7 +15,7 @@ interface Produto {
 export default async function Home() {
   //Faz uma requisição diretamente no corpo do componente
   try {
-    const resposta = await fetch('https://dummyjson.com/products');
+    const resposta = await fetch('https://dummyjson.com/products', { next: { revalidate: 60 } });
     if (!resposta.ok) throw new Error(`Erro ${resposta.status}`)
     const dados = await resposta.json();
     const produtos: Produto[] = dados.products;
