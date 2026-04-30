@@ -17,7 +17,7 @@ export default function Header() {
     const { usuario, Login, Logout } = useContext(AuthContext)
     const [pesquisa, setPesquisa] = useState('')
     const router = useRouter()
-    const menuRef = useRef(null);
+    const menuRef = useRef<HTMLDivElement>(null);
     const realizarBuscar = () => {
         if (pesquisa.trim() != '') {
             router.push(`/busca?q=${pesquisa}`)
@@ -36,8 +36,8 @@ export default function Header() {
         carregarCategorias()
     }, [])
     useEffect(() => {
-        const cliqueFora = (e) => {
-            if (menuRef.current && !menuRef.current.contains(e.target)) {
+        const cliqueFora = (e: MouseEvent) => {
+            if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
                 setMenu(false);
             }
         }
